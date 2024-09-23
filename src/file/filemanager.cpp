@@ -36,9 +36,8 @@ void FileManager::Read(BlockId &blk, Page &p) {
   auto file = getFile(blk.Filename());
   auto offset = blk.Number() * _block_size;
   file->seekp(offset, std::ios::beg);
-  auto contents = *p.contents();
 
-  file->read(&contents[0], _block_size);
+  file->read(&(*p.contents())[0], _block_size);
   if (file->bad()) {
     throw std::runtime_error("Error with I/O while reading");
   }
@@ -46,7 +45,7 @@ void FileManager::Read(BlockId &blk, Page &p) {
   if (readCount < _block_size) {
     std::cerr << "Read less than a page" << std::endl;
     file->clear();
-    memset(&(contents[readCount]), 0, _block_size - readCount);
+    memset(&(*p.contents())[0], 0, _block_size - readCount);
   }
 }
 
@@ -58,8 +57,7 @@ void FileManager::Write(BlockId &blk, Page &p) {
   auto file = getFile(blk.Filename());
   auto offset = blk.Number() * _block_size;
   file->seekp(offset, std::ios::beg);
-  auto contents = *p.contents();
-  file->write(&contents[0], _block_size);
+  file->write(&(*p.contents())[0], _block_size);
   if (file->bad()) {
     throw std::runtime_error("Error with I/O while writing");
   }

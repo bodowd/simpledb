@@ -12,7 +12,7 @@ public:
   std::vector<char> GetBytes(int offset);
   std::string GetString(int offset);
   void SetInt(int offset, int val);
-  void SetBytes(int offset, std::vector<char> &byte_buffer);
+  void SetBytes(int offset, const std::vector<char> &byte_buffer);
   void SetString(int offset, std::string val);
   int MaxLength(int strlen);
 

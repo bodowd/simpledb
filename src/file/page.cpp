@@ -41,7 +41,7 @@ int Page::GetInt(int offset) {
   return num;
 }
 
-void Page::SetBytes(int offset, std::vector<char> &byte_buffer) {
+void Page::SetBytes(int offset, const std::vector<char> &byte_buffer) {
   // SetBytes will allow a "byte array" to be stored.
   // The format stored in the Page will be the size of the std::vector<char>
   // to be stored, followed by std::vector<char> (which is the byte array).
@@ -55,7 +55,7 @@ void Page::SetBytes(int offset, std::vector<char> &byte_buffer) {
   // store the size of the bytes array being stored followed by the bytes
   // themselves
   SetInt(offset, size);
-  memcpy(_byte_buffer->data() + offset + sizeof(int), &byte_buffer, size);
+  memcpy(&(*_byte_buffer)[offset + sizeof(int)], &byte_buffer[0], size);
 }
 
 std::vector<char> Page::GetBytes(int offset) {
@@ -76,8 +76,8 @@ std::vector<char> Page::GetBytes(int offset) {
   // Copy the bytes that are stored in the page.
   // The byte sequence starts one byte after the offset because the offset
   // stores the size of the sequence.
-  byte_vec.insert(byte_vec.end(), _byte_buffer->data() + offset + sizeof(int),
-                  _byte_buffer->data() + offset + sizeof(int) + size);
+  byte_vec.insert(byte_vec.end(), &(*_byte_buffer)[offset + sizeof(int)],
+                  &(*_byte_buffer)[offset + sizeof(int) + size]);
   return byte_vec;
 }
 
