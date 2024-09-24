@@ -2,7 +2,8 @@
 #include <vector>
 namespace simpledb {
 
-// A Page object holds the contents of a disk block
+// A Page object holds the contents of a disk block.
+// It is a block-sized area of memory
 class Page {
 public:
   Page(int block_size);
