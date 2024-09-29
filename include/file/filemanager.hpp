@@ -1,3 +1,4 @@
+#pragma once
 #include "blockid.hpp"
 #include "page.hpp"
 #include <filesystem>
@@ -12,7 +13,7 @@ class FileManager {
 public:
   FileManager(const std::filesystem::path &db_directory, int block_size);
   void Read(BlockId &blk, Page &p);
-  void Write(BlockId &blk, Page &p);
+  void Write(const BlockId &blk, Page &p);
   BlockId Append(std::string filename);
   bool IsNew();
   int Length(const std::string filename);

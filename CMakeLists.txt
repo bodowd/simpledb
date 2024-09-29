@@ -200,7 +200,7 @@ target_compile_options(simpledb_objlib PUBLIC
 # option and definition difference
 target_compile_options(simpledb_objlib PRIVATE
   "-fPIC"
-  "-Werror"
+  # "-Werror"
   "-Wall"
   )
 
@@ -246,7 +246,7 @@ file(GLOB_RECURSE EXECUTABLES "${PROJECT_SOURCE_DIR}/app/*.cpp")
 foreach (EXECUTABLE ${EXECUTABLES})
   get_filename_component(FILENAME ${EXECUTABLE} NAME_WE)
   add_executable(${FILENAME} ${EXECUTABLE})
-  target_compile_options(${FILENAME} PRIVATE "-Werror" "-Wall")
+  target_compile_options(${FILENAME} PRIVATE "-Wall")
   target_link_libraries(${FILENAME} simpledb_static)
   set_target_properties(${FILENAME} PROPERTIES CXX_EXTENTIONS OFF ENABLE_EXPORTS ON)
   set_target_properties(

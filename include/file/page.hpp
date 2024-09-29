@@ -1,3 +1,4 @@
+#pragma once
 #include <memory>
 #include <vector>
 namespace simpledb {
@@ -15,7 +16,7 @@ public:
   void SetInt(int offset, int val);
   void SetBytes(int offset, const std::vector<char> &byte_buffer);
   void SetString(int offset, std::string val);
-  int MaxLength(int strlen);
+  static int MaxLength(int strlen);
 
   std::shared_ptr<std::vector<char>>
   contents(); // sometimes page contents should be alive after page is destroyed

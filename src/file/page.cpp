@@ -1,6 +1,8 @@
 #include "file/page.hpp"
 #include <cstring>
+#include <iostream>
 #include <memory>
+#include <ostream>
 #include <stdexcept>
 
 namespace simpledb {
@@ -50,10 +52,14 @@ void Page::SetBytes(int offset, const std::vector<char> &byte_buffer) {
 
   auto size = byte_buffer.size();
   if (offset + sizeof(int) + size > _byte_buffer->size()) {
+    printf("ERROR in Page::SetBytes: offset: %d, sizeof(int): %ld, "
+           "PAGE_SIZE:%lu\n",
+           offset, sizeof(int), (*_byte_buffer).size());
     throw std::runtime_error("Page overflow in SetBytes");
   }
   // store the size of the bytes array being stored followed by the bytes
   // themselves
+  std::cout << "Page::SetBytes offset: " << offset << std::endl;
   SetInt(offset, size);
   memcpy(&(*_byte_buffer)[offset + sizeof(int)], &byte_buffer[0], size);
 }
@@ -88,14 +94,18 @@ std::string Page::GetString(int offset) {
 
 void Page::SetInt(int offset, int val) {
   if (offset + sizeof(int) > _byte_buffer->size()) {
+    printf(
+        "ERROR in Page::SetInt: offset: %d, sizeof(int): %ld, PAGE_SIZE:%lu\n",
+        offset, sizeof(int), (*_byte_buffer).size());
     throw std::runtime_error("Page overflow in SetInt");
   }
-  memcpy(_byte_buffer->data() + offset, &val, sizeof(int));
+  memcpy(&(*_byte_buffer)[offset], &val, sizeof(int));
+  return;
 }
 
 void Page::SetString(int offset, std::string val) {
   auto v = std::vector<char>(val.begin(), val.end());
-  return SetBytes(offset, v);
+  SetBytes(offset, v);
 }
 
 int Page::MaxLength(int strlen) { return sizeof(int) + strlen; };

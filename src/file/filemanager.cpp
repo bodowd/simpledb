@@ -51,11 +51,11 @@ void FileManager::Read(BlockId &blk, Page &p) {
 
 // The Write method seeks to a position in the file and writes the contents
 // of the page to the block at that position
-void FileManager::Write(BlockId &blk, Page &p) {
+void FileManager::Write(const BlockId &blk, Page &p) {
   std::unique_lock<std::mutex> lock(_mutex);
-
-  auto file = getFile(blk.Filename());
-  auto offset = blk.Number() * _block_size;
+  const std::string fname = blk.Filename();
+  auto file = getFile(fname);
+  size_t offset = blk.Number() * _block_size;
   file->seekp(offset, std::ios::beg);
   file->write(&(*p.contents())[0], _block_size);
   if (file->bad()) {
@@ -113,6 +113,7 @@ FileManager::getFile(const std::string &filename) {
     // re-open with original mode
     file->open(path.string(), std::ios::binary | std::ios::in | std::ios::out);
     if (!file->is_open()) {
+      printf("can't open file %s", filename.c_str());
       throw std::runtime_error("can't open file");
     }
   }

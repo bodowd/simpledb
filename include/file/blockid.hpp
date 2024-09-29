@@ -1,3 +1,4 @@
+#pragma once
 #include <filesystem>
 
 namespace simpledb {
@@ -13,10 +14,10 @@ public:
 
   BlockId(std::string filename, int block_num);
 
-  std::string Filename();
+  std::string Filename() const;
 
   // return the block number
-  int Number();
+  int Number() const;
 
   std::string ToString();
 

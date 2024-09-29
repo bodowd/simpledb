@@ -7,9 +7,9 @@ BlockId::BlockId() {};
 BlockId::BlockId(std::string filename, int block_num)
     : _filename(filename), _block_num(block_num) {};
 
-std::string BlockId::Filename() { return _filename; }
+std::string BlockId::Filename() const { return _filename; }
 
-int BlockId::Number() { return _block_num; }
+int BlockId::Number() const { return _block_num; }
 
 bool operator==(const BlockId &left, const BlockId &right) {
   return left._filename == right._filename &&
