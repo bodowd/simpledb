@@ -14,5 +14,5 @@ make
 To run tests, run
 
 ```sh
-./simpledb_test
+./build/bin/simpledb_test
 ```
