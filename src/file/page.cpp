@@ -59,7 +59,6 @@ void Page::SetBytes(int offset, const std::vector<char> &byte_buffer) {
   }
   // store the size of the bytes array being stored followed by the bytes
   // themselves
-  std::cout << "Page::SetBytes offset: " << offset << std::endl;
   SetInt(offset, size);
   memcpy(&(*_byte_buffer)[offset + sizeof(int)], &byte_buffer[0], size);
 }
