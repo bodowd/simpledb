@@ -30,7 +30,7 @@ LogManager::LogIterator::LogIterator(FileManager *fm, BlockId blockId)
 }
 
 void LogManager::LogIterator::MoveToBlock(BlockId blockId) {
-  _file_manager->Read(_block_id, *_page);
+  _file_manager->Read(blockId, *_page);
   _boundary = _page->GetInt(0);
   _cur_pos = _boundary;
 }
@@ -64,6 +64,20 @@ LogManager::LogIterator LogManager::Iterator() {
 // Log records are written from right to left.
 // The first 4 bytes of the page contain the boundary value.
 // So a log page looks like this:
+//
+// 0   4                 20
+// ┌───┌─────────────────┬───────────┐
+// │20 │                 │log records│
+// └───└─────────────────┴───────────┘
+//  ▲
+//  │
+//  │
+//  │
+//  boundary value is stored here
+//  In this case, the boundary is
+//  at position 20
+//
+//
 // boundary value 4 bytes - empty space - newest record - older records
 // - end of page
 int LogManager::Append(std::vector<char> &log_record) {
@@ -85,9 +99,27 @@ int LogManager::Append(std::vector<char> &log_record) {
   // 4 bytes for boundary value, then 6 bytes to get to offset 10 which means
   // there are only 6 bytes available in the page, but 8 bytes are needed. So it
   // won't fit.
+  //
+  // 0   4                 10
+  // ┌───┌─────────────────┬───────────┐
+  // │ xxxxxxxxxxxxxxxxxxxx│log records│
+  // └───└─────────────────┴───────────┘
+  //                   ▲
+  //                   │
+  //                   │
+  //                   │
+  //                   new log record of  8 bytes
+  //                   would overflow into the boundary
+  //                   region because there are only 6
+  //                   bytes of free space in between
+  //                   the boundary value storage region
+  //                   and the last log record
+  //
   // boundary value (4B) -- empty space (6B) -- offset at position 10.
   // 8 bytes needed, but only 6B of empty space
   if (boundary - bytes_needed < static_cast<int>(sizeof(int))) {
+    // the new record won't fit in this page. Flush the current page to disk
+    // to persist the contents before making a new page in the log file, below
     flush();
     _cur_block = appendNewBlock();
     boundary = _log_page->GetInt(0);

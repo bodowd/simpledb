@@ -23,13 +23,13 @@ void printLogRecords(LogManager &log_manager, const std::string msg) {
 }
 
 std::vector<char> createLogRecord(std::string s, int n) {
-  int string_pos = 0;
+  int spos = 0;
   // insert the int string size after the string
-  int int_pos = string_pos + Page::MaxLength(s.size());
-  auto b = std::make_shared<std::vector<char>>(int_pos + sizeof(int));
+  int npos = spos + Page::MaxLength(s.size());
+  auto b = std::make_shared<std::vector<char>>(npos + sizeof(int));
   Page page(b);
-  page.SetString(string_pos, s);
-  page.SetInt(int_pos, n);
+  page.SetString(spos, s);
+  page.SetInt(npos, n);
   return *b;
 }
 
