@@ -1,3 +1,21 @@
+/*
+ * We do not want to rely on Virtual Memory
+ *
+ * Not all virtual pages of memory fit in physical memory, so if there is not
+ * enough of physical memory, the OS will spill to disk. This results in a
+ * page swap when a process accesses a virtual page not in memory but on disk.
+ * The OS will write a page of physical memory to disk in order to free a page
+ * of physical memory and then write the contents of the page on disk into the
+ * recently free physical memory. This is bad for the DB because we think
+ * something is in memory but its not.
+ *
+ * We allocate a small number of pages that will fit in physical memory, and
+ * I think this avoids page swaps? We do the swap ourselves because we know
+ * better what pages our DB is using or not
+ *
+ *
+ * */
+
 #pragma once
 #include "file/filemanager.hpp"
 #include <memory>
