@@ -16,6 +16,8 @@ bool operator==(const BlockId &left, const BlockId &right) {
          left._block_num == right._block_num;
 }
 
+bool BlockId::IsNull() { return _filename.empty(); }
+
 std::string BlockId::ToString() {
   return _filename + ",  " + std::to_string(_block_num);
 }

@@ -23,6 +23,8 @@ public:
 
   friend bool operator==(const BlockId &left, const BlockId &right);
 
+  bool IsNull();
+
 private:
   std::string _filename;
   int _block_num;

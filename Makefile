@@ -5,7 +5,7 @@ test:
 	rm -rf filetest logtest
 	./build/bin/simpledb_test
 	# clean up test files
-	rm -rf filetest logtest
+	rm -rf filetest logtest buffertest
 
 build:
 	mkdir -p build
