@@ -24,10 +24,6 @@ std::unique_ptr<LogManager> SimpleDB::GetLogManager() {
   return std::move(_log_manager);
 }
 
-// std::unique_ptr<BufferManager> SimpleDB::GetBufferManager() {
-// return std::move(_buffer_manager);
-//}
-
 BufferManager &SimpleDB::GetBufferManager() { return *_buffer_manager; }
 
 } // namespace simpledb
