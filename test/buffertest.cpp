@@ -43,5 +43,8 @@ TEST(buffer, buffer_test) {
   p2->SetInt(80, 9999);
   buff2->SetModified(1, 0);
   bm.Unpin(buff2);
+
+  std::cout << "Content of buff2 that will not be written to disk: "
+            << buff2->Contents()->GetInt(80) << std::endl;
 }
 } // namespace simpledb
