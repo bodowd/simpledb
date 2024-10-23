@@ -45,12 +45,14 @@ public:
   void FlushAll(int txnum);
   void Unpin(Buffer *buff);
   Buffer *Pin(const BlockId &blk);
+  // It is useful to shorten the max time for the tests
+  void SetMaxTime(int max_time);
 
 private:
   std::vector<std::unique_ptr<Buffer>> _buffer_pool;
   // Number of free/unpinned buffers
   int _num_available;
-  const int _max_time = 10000;
+  int _max_time = 10000; // 10 seconds
   std::mutex _mutex;
   // synchronization primitive for thread communication
   // It allows threads to block or sleep until a condition is met

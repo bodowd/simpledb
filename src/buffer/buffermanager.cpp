@@ -127,6 +127,8 @@ Buffer *BufferManager::Pin(const BlockId &blk) {
   return buff;
 }
 
+void BufferManager::SetMaxTime(int max_time) { _max_time = max_time; }
+
 bool BufferManager::waitingTooLong(
     std::chrono::time_point<std::chrono::high_resolution_clock> starttime) {
   auto end = std::chrono::high_resolution_clock::now();
