@@ -1,11 +1,13 @@
 .PHONY: test build all
 
+TEST_DIRS = filetest logtest buffertest buffermanagertest
+
 test:
 	# remove anything left over just in case
-	rm -rf filetest logtest
+	rm -rf $(TEST_DIRS) 
 	./build/bin/simpledb_test
 	# clean up test files
-	rm -rf filetest logtest buffertest
+	rm -rf $(TEST_DIRS) 
 
 build:
 	mkdir -p build
