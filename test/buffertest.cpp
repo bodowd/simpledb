@@ -6,15 +6,15 @@ TEST(buffer, buffer_test) {
   SimpleDB db("buffertest", 400, 3);
   BufferManager &bm = db.GetBufferManager();
 
-  auto buff1 = bm.Pin(BlockId("testfile", 1));
-  auto page = buff1->Contents();
-  auto n = page->GetInt(80);
+  Buffer *buff1 = bm.Pin(BlockId("testfile", 1));
+  Page *page = buff1->Contents();
+  int n = page->GetInt(80);
   // this modification will get written to disk
   page->SetInt(80, n + 562);
   buff1->SetModified(1, 0);
 
   std::cout << "The new value is " << (n + 562) << std::endl;
-  ASSERT_EQ(page->GetInt(80), 562);
+  ASSERT_EQ(page->GetInt(80), n + 562);
   // After unpinning buff1, it is now possible for it to be evicted
   // Since there are only 3 buffers in the buffer pool,
   // if we pin three more buffers, buff1 will get replaced (and thereby
@@ -38,7 +38,7 @@ TEST(buffer, buffer_test) {
   auto newBuff2Contents = p2->GetInt(80);
   std::cout << "The contents of block 1 now are in buff 2: " << p2->GetInt(80)
             << std::endl;
-  ASSERT_EQ(newBuff2Contents, 562);
+  ASSERT_EQ(newBuff2Contents, n + 562);
   // This modification won't get written to disk
   p2->SetInt(80, 9999);
   buff2->SetModified(1, 0);
