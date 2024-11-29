@@ -9,10 +9,18 @@ namespace simpledb {
 // treats the files as if they were raw disks. The db accesses the "disk" using
 // logical file blocks. Page 65 in the book
 class BlockId {
+  friend bool operator==(const BlockId &left, const BlockId &right);
+  friend bool operator!=(const BlockId &left, const BlockId &right);
+  friend bool operator<(const BlockId &left, const BlockId &right);
+  friend bool operator>(const BlockId &left, const BlockId &right);
+  friend bool operator<=(const BlockId &left, const BlockId &right);
+  friend bool operator>=(const BlockId &left, const BlockId &right);
+
 public:
   BlockId();
-
+  BlockId(const BlockId &blk);
   BlockId(std::string filename, int block_num);
+  BlockId &operator=(const BlockId &blk);
 
   std::string Filename() const;
 
@@ -21,7 +29,7 @@ public:
 
   std::string ToString();
 
-  friend bool operator==(const BlockId &left, const BlockId &right);
+  bool Equals(const BlockId &obj) const;
 
   bool IsNull();
 
