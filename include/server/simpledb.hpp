@@ -12,8 +12,10 @@ public:
   static std::string log_file;
 
   SimpleDB(std::string dir_name, int block_size, int buffer_size);
-  std::unique_ptr<FileManager> GetFileManager();
-  std::unique_ptr<LogManager> GetLogManager();
+  // std::unique_ptr<FileManager> GetFileManager();
+  FileManager &GetFileManager();
+  LogManager &GetLogManager();
+  // std::unique_ptr<LogManager> GetLogManager();
   // std::unique_ptr<BufferManager> GetBufferManager();
   BufferManager &GetBufferManager();
 

@@ -48,17 +48,17 @@ int createRecords(LogManager &log_manager, int start, int end) {
 
 TEST(log, log_test) {
   SimpleDB db("logtest", 400, 8);
-  std::unique_ptr<LogManager> lm = db.GetLogManager();
-  printLogRecords(*lm, "The initial empty log file: ");
+  LogManager &lm = db.GetLogManager();
+  printLogRecords(lm, "The initial empty log file: ");
   std::cout << "End of initial log file" << std::endl;
-  auto lsn1 = createRecords(*lm, 1, 35);
+  auto lsn1 = createRecords(lm, 1, 35);
   ASSERT_EQ(lsn1, 35);
-  printLogRecords(*lm, "\nThe log file now has these records: ");
-  auto lsn2 = createRecords(*lm, 36, 70);
+  printLogRecords(lm, "\nThe log file now has these records: ");
+  auto lsn2 = createRecords(lm, 36, 70);
   ASSERT_EQ(lsn2, 70);
   std::cout << "FLUSHING ..." << std::endl;
-  lm->Flush(65);
-  printLogRecords(*lm, "\nThe log file now has these records: ");
+  lm.Flush(65);
+  printLogRecords(lm, "\nThe log file now has these records: ");
 }
 
 } // namespace simpledb

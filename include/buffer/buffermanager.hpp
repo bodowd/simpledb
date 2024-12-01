@@ -1,3 +1,4 @@
+#pragma once
 #include "file/blockid.hpp"
 #include "file/filemanager.hpp"
 #include "log/logmanager.hpp"

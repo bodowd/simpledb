@@ -3,6 +3,7 @@
 #include "log/logmanager.hpp"
 #include <buffer/buffermanager.hpp>
 #include <chrono>
+#include <iostream>
 #include <memory>
 #include <mutex>
 #include <stdexcept>
@@ -56,7 +57,10 @@ BufferManager::BufferManager(FileManager *fm, LogManager *lm, int num_buffs) {
   }
 }
 
-int BufferManager::Available() { return _num_available; }
+int BufferManager::Available() {
+  std::unique_lock<std::mutex> lock(_mutex);
+  return _num_available;
+}
 
 void BufferManager::FlushAll(int txnum) {
   std::unique_lock<std::mutex> lock(_mutex);

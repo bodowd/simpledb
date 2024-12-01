@@ -3,7 +3,10 @@
 #include "file/blockid.hpp"
 #include "file/filemanager.hpp"
 #include "log/logmanager.hpp"
+#include "tx/bufferlist.hpp"
+#include "tx/concurrency/concurrencymanager.hpp"
 #include "tx/recovery/recoverymanager.hpp"
+
 namespace simpledb {
 class Transaction {
 public:
@@ -25,10 +28,12 @@ public:
 
 private:
   static int _next_tx_num;
+  static std::mutex _mutex;
   const int _end_of_file = -1;
   std::unique_ptr<RecoveryManager> _recovery_manager;
-  // std::unique_ptr<ConcurrencyManager> _concurrency_manager;
-  // std::unique_ptr<BufferList> _buffer_list;
+  std::unique_ptr<ConcurrencyManager> _concurrency_manager;
+  // manages the list of currently pinned buffers for a transaction
+  std::unique_ptr<BufferList> _buffer_list;
   BufferManager *_buffer_manager;
   FileManager *_file_manager;
   LogManager *_log_manager;

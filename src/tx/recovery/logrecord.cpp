@@ -1,11 +1,14 @@
 #include "tx/recovery/logrecord.hpp"
 #include "file/page.hpp"
 #include "log/logmanager.hpp"
+#include "tx/transaction.hpp"
 #include <memory>
 #include <string>
 #include <vector>
 
 namespace simpledb {
+LogRecord::~LogRecord() {}
+
 std::unique_ptr<LogRecord>
 LogRecord::CreateLogRecord(const std::vector<char> &byteVec) {
   auto _byteVec = std::make_shared<std::vector<char>>(byteVec);
@@ -162,10 +165,9 @@ std::string SetIntRecord::ToString() {
 }
 
 void SetIntRecord::Undo(Transaction *tx) {
-  // TODO: uncomment after implementing the transaction class
-  // tx->Pin(_block_id);
-  // tx->SetInt(_block_id, _offset, _val, false)
-  // tx->Unpin(_block_id)
+  tx->Pin(_block_id);
+  tx->SetInt(_block_id, _offset, _val, false);
+  tx->Unpin(_block_id);
 }
 
 int SetIntRecord::WriteToLog(LogManager *lm, int txNum, const BlockId &blockId,
@@ -215,10 +217,9 @@ std::string SetStringRecord::ToString() {
 }
 
 void SetStringRecord::Undo(Transaction *tx) {
-  // TODO: uncomment after implementing the transaction class
-  // tx->Pin(_block_id);
-  // tx->SetString(_block_id, _offset, _val, false);
-  // tx->UnPin(_block_id);
+  tx->Pin(_block_id);
+  tx->SetString(_block_id, _offset, _val, false);
+  tx->Unpin(_block_id);
 }
 
 int SetStringRecord::WriteToLog(LogManager *lm, int txNum,

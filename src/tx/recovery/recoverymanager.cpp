@@ -2,6 +2,7 @@
 #include "tx/recovery/logrecord.hpp"
 #include "tx/transaction.hpp"
 #include <algorithm>
+#include <iostream>
 #include <vector>
 
 namespace simpledb {

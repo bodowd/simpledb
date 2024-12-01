@@ -1,4 +1,5 @@
 #include "server/simpledb.hpp"
+#include "file/filemanager.hpp"
 #include "log/logmanager.hpp"
 #include <filesystem>
 #include <memory>
@@ -16,13 +17,17 @@ SimpleDB::SimpleDB(const std::string dir_name, int block_size,
       _file_manager.get(), _log_manager.get(), buffer_size);
 };
 
-std::unique_ptr<FileManager> SimpleDB::GetFileManager() {
-  return std::move(_file_manager);
-}
+// std::unique_ptr<FileManager> SimpleDB::GetFileManager() {
+//   return std::move(_file_manager);
+// }
 
-std::unique_ptr<LogManager> SimpleDB::GetLogManager() {
-  return std::move(_log_manager);
-}
+FileManager &SimpleDB::GetFileManager() { return *_file_manager; };
+
+// std::unique_ptr<LogManager> SimpleDB::GetLogManager() {
+//   return std::move(_log_manager);
+// }
+
+LogManager &SimpleDB::GetLogManager() { return *_log_manager; }
 
 BufferManager &SimpleDB::GetBufferManager() { return *_buffer_manager; }
 

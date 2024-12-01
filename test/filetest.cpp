@@ -4,19 +4,19 @@
 namespace simpledb {
 TEST(file, file_test) {
   SimpleDB sdb("filetest", 400, 8);
-  auto fm = sdb.GetFileManager();
+  auto &fm = sdb.GetFileManager();
   BlockId blk("testfile", 2);
 
   int offset = 81;
 
-  auto page = std::make_unique<Page>(fm->BlockSize());
+  auto page = std::make_unique<Page>(fm.BlockSize());
   std::string testData = "Data for testing file";
   page->SetString(offset, testData);
 
   auto size = page->MaxLength(testData.size());
   int offset2 = offset + size;
   page->SetInt(offset2, 7991);
-  fm->Write(blk, *page);
+  fm.Write(blk, *page);
 
   auto str = page->GetString(offset);
 
@@ -31,8 +31,8 @@ TEST(file, file_test) {
   // read the written data to a new page
   std::cout << "---" << std::endl;
   std::cout << "test reading the written data into a new page: " << std::endl;
-  auto page2 = std::make_unique<Page>(fm->BlockSize());
-  fm->Read(blk, *page2);
+  auto page2 = std::make_unique<Page>(fm.BlockSize());
+  fm.Read(blk, *page2);
   std::cout << "offset " << offset << " in page 2 contains "
             << page2->GetString(offset) << std::endl;
   std::cout << "offset " << offset2 << " in page 2 contains "

@@ -1,3 +1,10 @@
+#pragma once
+#include "file/filemanager.hpp"
+#include <memory>
+#include <string>
+#include <vector>
+
+namespace simpledb {
 /*
  * We do not want to rely on Virtual Memory
  *
@@ -15,14 +22,6 @@
  *
  *
  * */
-
-#pragma once
-#include "file/filemanager.hpp"
-#include <memory>
-#include <string>
-#include <vector>
-
-namespace simpledb {
 class LogManager {
 public:
   LogManager(FileManager *fm, std::string logfile);

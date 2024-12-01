@@ -1,3 +1,4 @@
+#pragma once
 #include "file/blockid.hpp"
 #include "log/logmanager.hpp"
 #include <vector>
@@ -19,8 +20,8 @@ public:
   virtual int TxNumber() = 0;
   virtual std::string ToString() = 0;
   virtual void Undo(Transaction *tx) = 0;
-  static std::unique_ptr<LogRecord>;
-  std::unique_ptr<LogRecord> CreateLogRecord(const std::vector<char> &byteVec);
+  static std::unique_ptr<LogRecord>
+  CreateLogRecord(const std::vector<char> &byteVec);
 };
 
 class CheckpointRecord : public LogRecord {
