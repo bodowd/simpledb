@@ -16,7 +16,7 @@
  */
 namespace simpledb {
 TEST(transaction, transaction_test) {
-  SimpleDB db = SimpleDB("txtest", 400, 8);
+  SimpleDB db = SimpleDB("transactiontest", 400, 8);
   // std::unique_ptr<FileManager> fm = db.GetFileManager();
   // std::unique_ptr<LogManager> lm = db.GetLogManager();
   FileManager &fm = db.GetFileManager();
