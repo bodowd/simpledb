@@ -42,4 +42,16 @@ Layout &Layout::operator=(const Layout &layout) {
   return *this;
 }
 
+Schema Layout::GetSchema() const { return _schema; }
+
+int Layout::Offset(const std::string &fieldname) {
+  if (_offsets.find(fieldname) == _offsets.end()) {
+    throw std::runtime_error("field name " + fieldname +
+                             " not found in schema");
+  } else {
+    return _offsets[fieldname];
+  }
+}
+
+int Layout::SlotSize() const { return _slotsize; }
 } // namespace simpledb
