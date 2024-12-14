@@ -1,6 +1,6 @@
 .PHONY: test build all
 
-TEST_DIRS = filetest logtest buffertest buffermanagertest transactiontest concurrencytest
+TEST_DIRS = filetest logtest buffertest buffermanagertest transactiontest concurrencytest recordtest testfile
 
 test:
 	# remove anything left over just in case

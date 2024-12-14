@@ -1,6 +1,7 @@
 #include "server/simpledb.hpp"
 #include "file/filemanager.hpp"
 #include "log/logmanager.hpp"
+#include "tx/transaction.hpp"
 #include <filesystem>
 #include <memory>
 #include <string>
@@ -30,5 +31,10 @@ FileManager &SimpleDB::GetFileManager() { return *_file_manager; };
 LogManager &SimpleDB::GetLogManager() { return *_log_manager; }
 
 BufferManager &SimpleDB::GetBufferManager() { return *_buffer_manager; }
+
+std::unique_ptr<Transaction> SimpleDB::NewTx() {
+  return std::make_unique<Transaction>(_file_manager.get(), _log_manager.get(),
+                                       _buffer_manager.get());
+}
 
 } // namespace simpledb

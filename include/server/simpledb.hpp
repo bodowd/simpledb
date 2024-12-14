@@ -1,5 +1,6 @@
 #pragma once
 #include "log/logmanager.hpp"
+#include "tx/transaction.hpp"
 #include <buffer/buffermanager.hpp>
 #include <file/filemanager.hpp>
 #include <memory>
@@ -18,6 +19,7 @@ public:
   // std::unique_ptr<LogManager> GetLogManager();
   // std::unique_ptr<BufferManager> GetBufferManager();
   BufferManager &GetBufferManager();
+  std::unique_ptr<Transaction> NewTx();
 
 private:
   std::unique_ptr<FileManager> _file_manager;
