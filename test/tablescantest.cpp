@@ -26,10 +26,14 @@ TEST(record, tablescantest) {
   std::uniform_real_distribution<double> d(0, 1);
 
   ts.BeforeFirst();
+  int countLessThan = 0;
   for (int i = 0; i < 50; i++) {
     ts.Insert();
     int n = round(d(gen) * 50);
     ts.SetInt("A", n);
+    if (n < 25) {
+      countLessThan++;
+    }
     ts.SetString("B", "rec" + std::to_string(n));
     std::cout << "inserting into slot " << ts.GetRid().ToString() << ": {" << n
               << ", rec" << n << "}" << std::endl;
@@ -48,6 +52,7 @@ TEST(record, tablescantest) {
       ts.Delete();
     }
   }
+  ASSERT_EQ(count, countLessThan);
 
   std::cout << count << " values under 25 were deleted" << std::endl;
   std::cout << "Here are the remaining records." << std::endl;

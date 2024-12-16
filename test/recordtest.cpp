@@ -34,9 +34,13 @@ TEST(record, record_test) {
   std::uniform_real_distribution<double> d(0, 1);
 
   int slot = rp.InsertAfter(-1);
+  int countLessThan = 0;
   while (slot >= 0) {
     int n = round(d(gen) * 50);
     rp.SetInt(slot, "A", n);
+    if (n < 25) {
+      countLessThan++;
+    }
     rp.SetString(slot, "B", "rec" + std::to_string(n));
     std::cout << "Inserting into slot " << slot << ": {" << n << ", rec" << n
               << "}" << std::endl;
@@ -57,6 +61,7 @@ TEST(record, record_test) {
     }
     slot = rp.NextAfter(slot);
   }
+  ASSERT_EQ(count, countLessThan);
 
   std::cout << count << " values under 25 were deleted." << std::endl;
   std::cout << "Here are the remaining records." << std::endl;
