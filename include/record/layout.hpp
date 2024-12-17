@@ -1,3 +1,4 @@
+#pragma once
 #include "record/schema.hpp"
 #include <map>
 

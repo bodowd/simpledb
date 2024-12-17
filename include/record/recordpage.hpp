@@ -1,3 +1,4 @@
+#pragma once
 #include "record/layout.hpp"
 #include "tx/transaction.hpp"
 #include <cmath>

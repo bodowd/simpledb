@@ -1,3 +1,4 @@
+#pragma once
 #include "record/recordpage.hpp"
 #include "record/rid.hpp"
 #include "tx/transaction.hpp"
