@@ -22,6 +22,13 @@ Layout::Layout(const Schema &schema) {
   _slotsize = pos;
 }
 
+Layout::Layout(const Schema &schema, std::map<std::string, int> &offsets,
+               int slotsize) {
+  _schema = schema;
+  _offsets = offsets;
+  _slotsize = slotsize;
+}
+
 int Layout::lengthInBytes(const std::string &fieldname) {
   int fieldType = _schema.Type(fieldname);
   if (fieldType == Schema::INTEGER) {
