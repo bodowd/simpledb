@@ -1,7 +1,8 @@
 .PHONY: test build all
 
 TEST_DIRS = filetest logtest buffertest buffermanagertest transactiontest \
-concurrencytest recordtest testfile tablescantest tabletest tablemanagertest
+concurrencytest recordtest testfile tablescantest tabletest tablemanagertest \
+catalogtest
 
 test:
 	# remove anything left over just in case
