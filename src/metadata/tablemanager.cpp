@@ -26,6 +26,7 @@ TableManager::TableManager(bool isNew, Transaction *tx) {
 
 void TableManager::CreateTable(const std::string &tablename, const Schema &sch,
                                Transaction *tx) {
+  /// There is one record in TABLECAT for each database table
   Layout layout = Layout(sch);
 
   /// insert one record into tblcat
@@ -35,6 +36,7 @@ void TableManager::CreateTable(const std::string &tablename, const Schema &sch,
   tcat.SetInt(SLOTSIZE, layout.SlotSize());
   tcat.Close();
 
+  /// There is one record in FLDCAT for each field of each table
   /// insert a record into FLDCAT for each field
   TableScan fcat = TableScan(tx, FIELDCAT, _fcatLayout);
   for (const std::string &fieldname : sch.Fields()) {
