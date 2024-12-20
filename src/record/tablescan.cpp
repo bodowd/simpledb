@@ -1,6 +1,5 @@
 #include "record/tablescan.hpp"
 #include "file/blockid.hpp"
-#include <iostream>
 #include <memory>
 namespace simpledb {
 

@@ -2,7 +2,7 @@
 
 TEST_DIRS = filetest logtest buffertest buffermanagertest transactiontest \
 concurrencytest recordtest testfile tablescantest tabletest tablemanagertest \
-catalogtest
+catalogtest metadatamanagertest
 
 test:
 	# remove anything left over just in case
