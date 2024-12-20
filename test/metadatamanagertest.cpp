@@ -1,7 +1,10 @@
 #include "metadata/metadatamanager.hpp"
 #include "record/schema.hpp"
+#include "record/tablescan.hpp"
 #include "server/simpledb.hpp"
 #include "gtest/gtest.h"
+#include <random>
+#include <string>
 namespace simpledb {
 TEST(metadata, metadatamanagertest) {
   SimpleDB db = SimpleDB("metadatamanagertest", 400, 8);
@@ -36,6 +39,25 @@ TEST(metadata, metadatamanagertest) {
   EXPECT_EQ(sch2.Length("B"), 9);
 
   /// Part 2: Statistics Metadata
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<double> d(0, 1);
+
+  TableScan ts(tx.get(), "MyTable", layout);
+  for (int i = 0; i < 50; i++) {
+    ts.Insert();
+    int n = round(d(gen) * 50);
+    ts.SetInt("A", n);
+    ts.SetString("B", "rec" + std::to_string(n));
+  }
+
+  StatInfo si = mdm.GetStatInfo("MyTable", layout, tx.get());
+  std::cout << "Blocks accessed: " << si.BlocksAccessed() << std::endl;
+  std::cout << "Number of records in table: " << si.RecordsOutput()
+            << std::endl;
+  ASSERT_EQ(si.RecordsOutput(), 50);
+  std::cout << "Distinct values in field A: " << si.DistinctValues("A")
+            << std::endl;
 
   /// Part 3: View Metadata
   std::string viewdef = "select B from MyTable where A = 1";
