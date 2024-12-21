@@ -2,7 +2,6 @@
 #include "record/schema.hpp"
 #include "record/tablescan.hpp"
 #include "tx/transaction.hpp"
-#include <iostream>
 #include <memory>
 
 namespace simpledb {
@@ -10,13 +9,14 @@ namespace simpledb {
 IndexInfo::IndexInfo() {}
 
 IndexInfo::IndexInfo(const IndexInfo &ii)
-    : _idxname(ii._idxname), _fieldname(ii._fieldname), _tx(ii._tx),
-      _tblSchema(ii._tblSchema), _idxLayout(ii._idxLayout), _si(ii._si) {}
+    : _idxname(ii._idxname), _fieldname(ii._fieldname), _idxtype(ii._idxtype),
+      _tx(ii._tx), _tblSchema(ii._tblSchema), _idxLayout(ii._idxLayout),
+      _si(ii._si) {}
 
 IndexInfo::IndexInfo(const std::string &idxname, const std::string &fieldname,
-                     const Schema &tableSchema, Transaction *tx,
-                     const StatInfo &si)
-    : _idxname(idxname), _fieldname(fieldname), _tx(tx),
+                     const std::string &idxtype, const Schema &tableSchema,
+                     Transaction *tx, const StatInfo &si)
+    : _idxname(idxname), _fieldname(fieldname), _idxtype(idxtype), _tx(tx),
       _tblSchema(tableSchema), _si(si) {
 
   _idxLayout = createIdxLayout();
@@ -25,6 +25,7 @@ IndexInfo::IndexInfo(const std::string &idxname, const std::string &fieldname,
 IndexInfo &IndexInfo::operator=(const IndexInfo &ii) {
   if (this != &ii) {
     _idxname = ii._idxname;
+    _idxtype = ii._idxtype;
     _fieldname = ii._fieldname;
     _tx = ii._tx;
     _tblSchema = ii._tblSchema;
@@ -35,11 +36,12 @@ IndexInfo &IndexInfo::operator=(const IndexInfo &ii) {
 }
 
 std::shared_ptr<Index> IndexInfo::Open() {
-  std::cout << "INDEX INFO OPEN" << std::endl;
   Schema sch;
   return std::static_pointer_cast<Index>(
       std::make_shared<Index>()); // temporary
 }
+
+std::string IndexInfo::IndexType() { return _idxtype; }
 
 int IndexInfo::BlocksAccessed() {
   int recordsPerBlock = _tx->BlockSize() / _idxLayout.SlotSize();
@@ -77,6 +79,7 @@ IndexManager::IndexManager(bool isNew, TableManager *tm, StatManager *sm,
     sch.AddStringField("indexname", tm->MAX_NAME);
     sch.AddStringField("tablename", tm->MAX_NAME);
     sch.AddStringField("fieldname", tm->MAX_NAME);
+    sch.AddStringField("indextype", tm->MAX_NAME);
     tm->CreateTable("idxcat", sch, tx);
   }
 
@@ -87,12 +90,14 @@ IndexManager::IndexManager(bool isNew, TableManager *tm, StatManager *sm,
 
 void IndexManager::CreateIndex(const std::string &idxname,
                                const std::string &tablename,
-                               const std::string &fieldname, Transaction *tx) {
+                               const std::string &fieldname,
+                               const std::string &indextype, Transaction *tx) {
   TableScan ts(tx, "idxcat", _layout);
   ts.Insert();
   ts.SetString("indexname", idxname);
   ts.SetString("tablename", tablename);
   ts.SetString("fieldname", fieldname);
+  ts.SetString("indextype", indextype);
   ts.Close();
 }
 
@@ -103,11 +108,13 @@ IndexManager::GetIndexInfo(const std::string &tablename,
   TableScan ts(tx, "idxcat", _layout);
   while (ts.Next()) {
     if (ts.GetString("tablename") == tablename) {
-      std::string idxname = ts.GetString("indexname");
+      std::string indexname = ts.GetString("indexname");
       std::string fieldname = ts.GetString("fieldname");
+      std::string indextype = ts.GetString("indextype");
       Layout tblLayout = _tm->GetLayout(tablename, tx);
       StatInfo tblSi = _sm->GetStatInfo(tablename, tblLayout, tx);
-      IndexInfo ii(idxname, fieldname, tblLayout.GetSchema(), tx, tblSi);
+      IndexInfo ii(indexname, fieldname, indextype, tblLayout.GetSchema(), tx,
+                   tblSi);
       result[fieldname] = ii;
     }
   }

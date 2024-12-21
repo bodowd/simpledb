@@ -16,7 +16,8 @@ public:
   IndexInfo();
   IndexInfo(const IndexInfo &ii);
   IndexInfo(const std::string &idxname, const std::string &fieldname,
-            const Schema &tableschema, Transaction *tx, const StatInfo &si);
+            const std::string &idxtype, const Schema &tableschema,
+            Transaction *tx, const StatInfo &si);
 
   IndexInfo &operator=(const IndexInfo &ii);
   std::shared_ptr<Index> Open();
@@ -24,10 +25,11 @@ public:
   int BlocksAccessed();
   int RecordsOutput();
   int DistinctValues(const std::string &fieldname);
+  std::string IndexType();
 
 private:
   Layout createIdxLayout();
-  std::string _idxname, _fieldname;
+  std::string _idxname, _fieldname, _idxtype;
   Transaction *_tx;
   Schema _tblSchema;
   Layout _idxLayout;
@@ -54,7 +56,8 @@ public:
   /// Inserts a new record into the "idxcat" table in the catalog in order to
   /// add an index.
   void CreateIndex(const std::string &idxname, const std::string &tablename,
-                   const std::string &fieldname, Transaction *tx);
+                   const std::string &fieldname, const std::string &indextype,
+                   Transaction *tx);
   /// Searches the "idxcat" catalog table for records having the specified
   /// tablename and returns the indexes of that table in a std::map.
   std::map<std::string, IndexInfo> GetIndexInfo(const std::string &tablename,

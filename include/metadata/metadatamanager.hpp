@@ -24,7 +24,8 @@ public:
   StatInfo GetStatInfo(const std::string &tablename, const Layout &lt,
                        Transaction *tx);
   void CreateIndex(const std::string &idxname, const std::string &tablename,
-                   const std::string &fieldname, Transaction *tx);
+                   const std::string &fieldname, const std::string &indextype,
+                   Transaction *tx);
   std::map<std::string, IndexInfo> GetIndexInfo(const std::string &tablename,
                                                 Transaction *tx);
 };

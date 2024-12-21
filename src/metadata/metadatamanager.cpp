@@ -43,8 +43,9 @@ StatInfo MetadataManager::GetStatInfo(const std::string &tablename,
 void MetadataManager::CreateIndex(const std::string &idxname,
                                   const std::string &tablename,
                                   const std::string &fieldname,
+                                  const std::string &indexname,
                                   Transaction *tx) {
-  _im->CreateIndex(idxname, tablename, fieldname, tx);
+  _im->CreateIndex(idxname, tablename, fieldname, indexname, tx);
 }
 
 std::map<std::string, IndexInfo>

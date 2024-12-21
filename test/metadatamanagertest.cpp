@@ -10,7 +10,6 @@ TEST(metadata, metadatamanagertest) {
   SimpleDB db = SimpleDB("metadatamanagertest", 400, 8);
   auto tx = db.NewTx();
   MetadataManager mdm = MetadataManager(true, tx.get());
-  std::cout << "HERE!!!!!!!!!!!" << std::endl;
 
   Schema sch;
   sch.AddIntField("A");
@@ -68,12 +67,14 @@ TEST(metadata, metadatamanagertest) {
   ASSERT_EQ(v, viewdef);
 
   /// Part 4: Index Metadata
-  mdm.CreateIndex("indexA", "MyTable", "A", tx.get());
-  mdm.CreateIndex("indexB", "MyTable", "B", tx.get());
+  mdm.CreateIndex("indexA", "MyTable", "A", "hash", tx.get());
+  mdm.CreateIndex("indexB", "MyTable", "B", "hash", tx.get());
   std::map<std::string, IndexInfo> idxmap =
       mdm.GetIndexInfo("MyTable", tx.get());
 
   auto ii = idxmap.at("A");
+  std::cout << "Index type: " << ii.IndexType() << std::endl;
+  ASSERT_EQ(ii.IndexType(), "hash");
   std::cout << "Blocks accessed -- B(indexA) " << ii.BlocksAccessed()
             << std::endl;
   std::cout << "Number of records -- R(indexA) " << ii.RecordsOutput()
@@ -84,6 +85,8 @@ TEST(metadata, metadatamanagertest) {
             << std::endl;
 
   ii = idxmap.at("B");
+  std::cout << "Index type: " << ii.IndexType() << std::endl;
+  ASSERT_EQ(ii.IndexType(), "hash");
   std::cout << "Blocks accessed -- B(indexB) " << ii.BlocksAccessed()
             << std::endl;
   std::cout << "Number of records -- R(indexB) " << ii.RecordsOutput()
