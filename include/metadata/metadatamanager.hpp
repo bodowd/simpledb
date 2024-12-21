@@ -1,4 +1,4 @@
-#include "metadata/statmanager.hpp"
+#include "metadata/indexmanager.hpp"
 #include "metadata/tablemangager.hpp"
 #include "metadata/viewmanager.hpp"
 #include "tx/transaction.hpp"
@@ -10,6 +10,7 @@ private:
   static std::unique_ptr<TableManager> _tm;
   static std::unique_ptr<ViewManager> _vm;
   static std::unique_ptr<StatManager> _sm;
+  static std::unique_ptr<IndexManager> _im;
 
 public:
   MetadataManager(bool isNew, Transaction *tx);
@@ -22,5 +23,9 @@ public:
 
   StatInfo GetStatInfo(const std::string &tablename, const Layout &lt,
                        Transaction *tx);
+  void CreateIndex(const std::string &idxname, const std::string &tablename,
+                   const std::string &fieldname, Transaction *tx);
+  std::map<std::string, IndexInfo> GetIndexInfo(const std::string &tablename,
+                                                Transaction *tx);
 };
 } // namespace simpledb
