@@ -28,6 +28,7 @@ int StatInfo::BlocksAccessed() { return _numBlocks; }
 int StatInfo::RecordsOutput() { return _numRecs; }
 
 int StatInfo::DistinctValues(const std::string &fieldname) {
+  // TODO: pg. 212 - exercise 7.12 to improve
   return 1 + (_numRecs / 3); // can be improved
 }
 
