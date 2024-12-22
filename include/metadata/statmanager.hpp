@@ -1,3 +1,4 @@
+#pragma once
 #include "metadata/tablemangager.hpp"
 #include "tx/transaction.hpp"
 #include <map>

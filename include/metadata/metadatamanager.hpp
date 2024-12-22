@@ -1,3 +1,4 @@
+#pragma once
 #include "metadata/indexmanager.hpp"
 #include "metadata/tablemangager.hpp"
 #include "metadata/viewmanager.hpp"

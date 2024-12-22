@@ -1,3 +1,4 @@
+#pragma once
 #include "metadata/tablemangager.hpp"
 #include "record/layout.hpp"
 #include "tx/transaction.hpp"
