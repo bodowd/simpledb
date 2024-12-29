@@ -1,8 +1,11 @@
-.PHONY: test build all
+.PHONY: test build clean all
 
 TEST_DIRS = filetest logtest buffertest buffermanagertest transactiontest \
 concurrencytest recordtest testfile tablescantest tabletest tablemanagertest \
-catalogtest metadatamanagertest
+catalogtest metadatamanagertest scantest 
+
+clean: 
+	rm -rf $(TEST_DIRS)
 
 test:
 	# remove anything left over just in case
@@ -15,5 +18,5 @@ build:
 	mkdir -p build
 	cd build && cmake .. && make
 
-all: build test
+all: build test clean
 
