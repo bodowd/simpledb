@@ -1,5 +1,6 @@
 #include "record/tablescan.hpp"
 #include "file/blockid.hpp"
+#include "record/schema.hpp"
 #include <memory>
 namespace simpledb {
 
@@ -45,8 +46,13 @@ std::string TableScan::GetString(const std::string &fieldname) {
   return _rp->GetString(_currentSlot, fieldname);
 }
 
-// TODO: pg 182
-// Constant TableScan::GetVal(){}
+Constant TableScan::GetVal(const std::string &fieldname) {
+  if (_layout.GetSchema().Type(fieldname) == Schema::INTEGER) {
+    return Constant(GetInt(fieldname));
+  } else {
+    return Constant(GetString(fieldname));
+  }
+}
 
 bool TableScan::HasField(const std::string &fieldname) {
   return _layout.GetSchema().HasField(fieldname);
@@ -61,8 +67,13 @@ void TableScan::SetString(const std::string &fieldname,
   _rp->SetString(_currentSlot, fieldname, val);
 }
 
-// TODO: page 183
-// void TableScan::SetVal(){}
+void TableScan::SetVal(const std::string &fieldname, const Constant &val) {
+  if (_layout.GetSchema().Type(fieldname) == Schema::INTEGER) {
+    SetInt(fieldname, val.AsInt());
+  } else {
+    SetString(fieldname, val.AsString());
+  }
+}
 
 void TableScan::Insert() {
   _currentSlot = _rp->InsertAfter(_currentSlot);
@@ -78,7 +89,7 @@ void TableScan::Insert() {
 
 void TableScan::Delete() { _rp->Delete(_currentSlot); }
 
-void TableScan::MoveToRid(RID rid) {
+void TableScan::MoveToRid(const RID &rid) {
   Close();
   BlockId blk = BlockId(_filename, rid.BlockNumber());
   _rp = std::make_unique<RecordPage>(_tx, blk, _layout);
