@@ -3,6 +3,7 @@
 #include <string>
 namespace simpledb {
 
+/// This mimics the StreamTokenizer in Java. Covered on pg 240-241
 class StreamTokenizer {
 public:
   static int TOKEN_EOF;
@@ -21,11 +22,12 @@ public:
   void EolIsSignificant(bool flag);
   int LineNum();
   void LowerCaseMode(bool flag);
+  /// Advance to the next token and returns the token type
   int NextToken();
-  // check if a char is within the standard 8-bit ASCII character range
-  // This should be treated as a literal single character, and it has no special
-  // meaning. If it is an ordinary character this will reset the characters
-  // metadata
+  /// Check if a char is within the standard 8-bit ASCII character range
+  /// This should be treated as a literal single character, and it has no
+  /// special meaning. If it is an ordinary character this will reset the
+  /// characters metadata
   void OrdinaryChar(int ch);
   void OrdinaryChars(int low, int high);
   // Designate the numeric characters
