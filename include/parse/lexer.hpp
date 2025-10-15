@@ -24,6 +24,8 @@ public:
   bool MatchIntConstant();
   bool MatchStringConstant();
   bool MatchKeyword(const std::string &kw);
+  /// Id (identifiers) do not need to be meaningful. They just have to be words
+  /// that are not keywords
   bool MatchId();
 
   /// "eat" methods

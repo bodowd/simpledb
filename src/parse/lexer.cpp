@@ -37,7 +37,8 @@ bool Lexer::MatchId() {
 
 void Lexer::EatDelim(const char &d) {
   if (!MatchDelim(d)) {
-    throw std::runtime_error("bad syntax exception");
+    throw std::runtime_error("bad syntax exception in EatDelim: " +
+                             std::string(1, d));
   }
   nextToken();
 }
@@ -62,7 +63,7 @@ std::string Lexer::EatStringConstant() {
 
 void Lexer::EatKeyword(const std::string &w) {
   if (!MatchKeyword(w)) {
-    throw std::runtime_error("bad syntax exception");
+    throw std::runtime_error("bad syntax exception at EatKeyword: " + w);
   }
   nextToken();
 }
