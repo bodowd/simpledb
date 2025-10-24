@@ -21,9 +21,11 @@ public:
   bool IsNull() const;
   void ConjoinWith(const Predicate &pred);
   bool IsSatisfied(Scan *s) const;
+  /// Determine the number of records that will satisfy the predicate
   int ReductionFactor(Plan *plan) const;
   Predicate SelectSubPred(const Schema &sch) const;
   Predicate JoinSubPred(const Schema &sch1, const Schema &sch2) const;
+  /// Determine whether the predicate equates the specified field
   Constant EquatesWithConstant(const std::string &fieldname) const;
   std::string EquatesWithField(const std::string &fieldname) const;
   std::string ToString() const;

@@ -1,8 +1,16 @@
+#pragma once
 #include "query/scan.hpp"
 #include "record/schema.hpp"
 #include <memory>
 
 namespace simpledb {
+/// Plans are similar to Scans but a plan accesses the metadata of the tables in
+/// the query. A Scan accesses the table's data
+///
+/// When a SQL query is submitted, a database planner may create several plans
+/// for the query and use the metadata of the tables in the query to choose
+/// the most efficient plan. It then uses that plan's Open() method to create
+/// the desired scan
 class Plan {
 public:
   virtual ~Plan() {}

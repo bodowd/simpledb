@@ -218,7 +218,9 @@ std::unique_ptr<CreateIndexData> Parser::CreateIndex() {
   _lex.EatDelim('(');
   std::string fieldname = NewField();
   _lex.EatDelim(')');
-  return std::make_unique<CreateIndexData>(idxname, tablename, fieldname);
+  /// only hash index supported right now
+  return std::make_unique<CreateIndexData>(idxname, tablename, fieldname,
+                                           "hash");
 }
 
 } // namespace simpledb
