@@ -25,6 +25,7 @@ public:
   FileManager &GetFileManager();
   LogManager &GetLogManager();
   BufferManager &GetBufferManager();
+  MetadataManager &GetMetadataManager();
   std::unique_ptr<Transaction> NewTx();
   Planner &GetPlanner();
 

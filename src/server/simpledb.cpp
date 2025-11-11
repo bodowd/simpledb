@@ -1,6 +1,7 @@
 #include "server/simpledb.hpp"
 #include "file/filemanager.hpp"
 #include "log/logmanager.hpp"
+#include "metadata/metadatamanager.hpp"
 #include "plan/basicqueryplanner.hpp"
 #include "plan/basicupdateplanner.hpp"
 #include "plan/planner.hpp"
@@ -62,6 +63,8 @@ FileManager &SimpleDB::GetFileManager() { return *_file_manager; };
 LogManager &SimpleDB::GetLogManager() { return *_log_manager; }
 
 BufferManager &SimpleDB::GetBufferManager() { return *_buffer_manager; }
+
+MetadataManager &SimpleDB::GetMetadataManager() { return *_metadata_manager; }
 
 std::unique_ptr<Transaction> SimpleDB::NewTx() {
   return std::make_unique<Transaction>(_file_manager.get(), _log_manager.get(),
