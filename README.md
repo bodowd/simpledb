@@ -18,5 +18,7 @@ make
 To run tests, run
 
 ```sh
-./build/bin/simpledb_test
+# this removes the old test directories first -- if the old test directories are not removed, the tests
+# won't be starting from the expected state
+make test
 ```
