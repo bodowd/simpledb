@@ -4,6 +4,7 @@
 #include "record/tablescan.hpp"
 #include "tx/transaction.hpp"
 #include <map>
+#include <stdexcept>
 namespace simpledb {
 TableManager::TableManager(bool isNew, Transaction *tx) {
   Schema tcatSchema;
@@ -60,6 +61,12 @@ Layout TableManager::GetLayout(const std::string &tablename, Transaction *tx) {
       size = tcat.GetInt(SLOTSIZE);
       break;
     }
+  }
+
+  if (size < 0) {
+    std::string error_msg =
+        "Table " + tablename + " does not exist in the database";
+    throw std::runtime_error(error_msg);
   }
 
   tcat.Close();

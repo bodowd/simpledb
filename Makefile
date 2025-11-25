@@ -2,8 +2,8 @@
 
 TEST_DIRS = filetest logtest buffertest buffermanagertest transactiontest \
 concurrencytest recordtest testfile tablescantest tabletest tablemanagertest \
-catalogtest metadatamanagertest scantest scantest2 tokenizertest parsertest \
-lexertest plannertest1 indexretrievaltest indexupdatetest
+catalogtest metadatamanagertest metadatamanagertest2 scantest scantest2 tokenizertest \
+parsertest lexertest plannertest1 indexretrievaltest indexupdatetest
 
 clean: 
 	rm -rf $(TEST_DIRS)
