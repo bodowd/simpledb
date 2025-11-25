@@ -67,14 +67,14 @@ TEST(metadata, metadatamanagertest) {
   ASSERT_EQ(v, viewdef);
 
   /// Part 4: Index Metadata
-  mdm.CreateIndex("indexA", "MyTable", "A", "hash", tx.get());
-  mdm.CreateIndex("indexB", "MyTable", "B", "hash", tx.get());
+  mdm.CreateIndex("indexA", "MyTable", "A", "btree", tx.get());
+  mdm.CreateIndex("indexB", "MyTable", "B", "btree", tx.get());
   std::map<std::string, IndexInfo> idxmap =
       mdm.GetIndexInfo("MyTable", tx.get());
 
   auto ii = idxmap.at("A");
   std::cout << "Index type: " << ii.IndexType() << std::endl;
-  ASSERT_EQ(ii.IndexType(), "hash");
+  ASSERT_EQ(ii.IndexType(), "btree");
   std::cout << "Blocks accessed -- B(indexA) " << ii.BlocksAccessed()
             << std::endl;
   std::cout << "Number of records -- R(indexA) " << ii.RecordsOutput()
@@ -86,7 +86,7 @@ TEST(metadata, metadatamanagertest) {
 
   ii = idxmap.at("B");
   std::cout << "Index type: " << ii.IndexType() << std::endl;
-  ASSERT_EQ(ii.IndexType(), "hash");
+  ASSERT_EQ(ii.IndexType(), "btree");
   std::cout << "Blocks accessed -- B(indexB) " << ii.BlocksAccessed()
             << std::endl;
   std::cout << "Number of records -- R(indexB) " << ii.RecordsOutput()

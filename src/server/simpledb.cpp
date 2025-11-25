@@ -1,5 +1,6 @@
 #include "server/simpledb.hpp"
 #include "file/filemanager.hpp"
+#include "index/planner/indexupdateplanner.hpp"
 #include "log/logmanager.hpp"
 #include "metadata/metadatamanager.hpp"
 #include "plan/basicqueryplanner.hpp"
@@ -41,8 +42,10 @@ SimpleDB::SimpleDB(const std::string &dir_name)
   _metadata_manager = std::make_unique<MetadataManager>(isNew, tx.get());
   auto queryPlanner =
       std::make_unique<BasicQueryPlanner>(_metadata_manager.get());
+  // auto updatePlanner =
+  //     std::make_unique<BasicUpdatePlanner>(_metadata_manager.get());
   auto updatePlanner =
-      std::make_unique<BasicUpdatePlanner>(_metadata_manager.get());
+      std::make_unique<IndexUpdatePlanner>(_metadata_manager.get());
   _planner = std::make_unique<Planner>(std::move(queryPlanner),
                                        std::move(updatePlanner));
   tx->Commit();

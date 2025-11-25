@@ -1,5 +1,6 @@
 #include "jdbc/embeddeddriver.hpp"
 #include "jdbc/embeddedstatement.hpp"
+#include "server/simpledb.hpp"
 #include <exception>
 #include <iostream>
 #include <memory>
@@ -19,9 +20,9 @@ void CreateStudentDB() {
 
     std::cout << "Created STUDENT table" << std::endl;
 
-    // s = "create index majorid on STUDENT(MajorId)";
-    // stmt->executeUpdate(s);
-    // std::cout << "Index majorid on STUDENT(MajorId) created" << std::endl;
+    s = "create index majorid on STUDENT(MajorId)";
+    stmt->ExecuteUpdate(s);
+    std::cout << "Index majorid on STUDENT(MajorId) created" << std::endl;
 
     s = "insert into STUDENT(SId, SName, MajorId, GradYear) values ";
     std::vector<std::string> studVals = {

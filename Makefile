@@ -3,10 +3,16 @@
 TEST_DIRS = filetest logtest buffertest buffermanagertest transactiontest \
 concurrencytest recordtest testfile tablescantest tabletest tablemanagertest \
 catalogtest metadatamanagertest scantest scantest2 tokenizertest parsertest \
-lexertest plannertest1
+lexertest plannertest1 indexretrievaltest indexupdatetest
 
 clean: 
 	rm -rf $(TEST_DIRS)
+
+clean-students:
+	rm -rf students
+
+students:
+	./build/bin/createstudentdb
 
 test:
 	# remove anything left over just in case

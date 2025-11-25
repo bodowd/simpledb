@@ -1,4 +1,5 @@
 #include "metadata/indexmanager.hpp"
+#include "index/btree/btreeindex.hpp"
 #include "record/schema.hpp"
 #include "record/tablescan.hpp"
 #include "tx/transaction.hpp"
@@ -35,10 +36,10 @@ IndexInfo &IndexInfo::operator=(const IndexInfo &ii) {
   return *this;
 }
 
-std::shared_ptr<Index> IndexInfo::Open() {
+std::shared_ptr<Index> IndexInfo::Open() const {
   Schema sch;
   return std::static_pointer_cast<Index>(
-      std::make_shared<Index>()); // temporary
+      std::make_shared<BTreeIndex>(_tx, _idxname, _idxLayout));
 }
 
 std::string IndexInfo::IndexType() { return _idxtype; }
@@ -47,8 +48,7 @@ int IndexInfo::BlocksAccessed() {
   int recordsPerBlock = _tx->BlockSize() / _idxLayout.SlotSize();
   // size of the index file
   int numBlocks = _si.RecordsOutput() / recordsPerBlock;
-  return 1; // temporary
-  // return HashIndex.searchCost(numBlocks, rpb);
+  return BTreeIndex::SearchCost(numBlocks, recordsPerBlock);
 }
 
 int IndexInfo::RecordsOutput() {

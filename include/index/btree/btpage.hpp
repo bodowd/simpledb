@@ -27,7 +27,8 @@ public:
   bool IsFull();
   BlockId Split(int splitPosition, int flag);
   Constant GetDataVal(int slot);
-  /// The flag is an integer that holds metadata for the page
+  /// The flag indicates the level of the block in the B-Tree, as in level 0
+  /// block. -1 indicates it is a leaf block
   int GetFlag();
   void SetFlag(int val);
   BlockId AppendNew(int flag);

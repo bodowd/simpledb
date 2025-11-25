@@ -62,7 +62,10 @@ BlockId BTPage::AppendNew(int flag) {
 }
 
 void BTPage::Format(const BlockId &blk, int flag) {
-  /// the first byte, starting at offset 0, is the flag for the BTPage
+  /// the first byte, starting at offset 0, is the flag for the BTPage. The Flag
+  /// indicates what level of the BTree the page is in, for example a level 0
+  /// block which has children that contain the index records or level 1
+  /// directory block
   _tx->SetInt(blk, 0, flag, false);
   /// Set the number of records to 0. This is stored at offset sizeof(int) -- 4
   /// bytes
@@ -120,6 +123,11 @@ int BTPage::GetNumRecs() { return _tx->GetInt(_current_block, sizeof(int)); }
 int BTPage::getInt(int slot, const std::string &fieldname) {
   int pos = fieldPosition(slot, fieldname);
   return _tx->GetInt(_current_block, pos);
+}
+
+std::string BTPage::getString(int slot, const std::string &fieldname) {
+  int pos = fieldPosition(slot, fieldname);
+  return _tx->GetString(_current_block, pos);
 }
 
 Constant BTPage::getVal(int slot, const std::string &fieldname) {

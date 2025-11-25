@@ -15,6 +15,9 @@ make
 
 ## Run tests
 
+For some tests, like indexupdate and indexretrieval, a "students" database with a "student" table is required. Create this database by running
+`make students`
+
 To run tests, run
 
 ```sh

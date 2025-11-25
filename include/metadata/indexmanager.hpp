@@ -21,7 +21,7 @@ public:
             Transaction *tx, const StatInfo &si);
 
   IndexInfo &operator=(const IndexInfo &ii);
-  std::shared_ptr<Index> Open();
+  std::shared_ptr<Index> Open() const;
 
   int BlocksAccessed();
   int RecordsOutput();
