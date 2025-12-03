@@ -11,7 +11,10 @@ EmbeddedStatement::EmbeddedStatement(EmbeddedConnection &conn, Planner &planner)
 EmbeddedResultSet *EmbeddedStatement::ExecuteQuery(const std::string &sql) {
   try {
     Transaction &tx = _conn.GetTransaction();
+    /// Parser is run and then a query plan generated from that
     auto query_plan = _planner.CreateQueryPlan(sql, &tx);
+    /// The plan is then sent to EmbeddedResultSet, given to the scan, and the
+    /// scan will execute the plan
     return new EmbeddedResultSet(*query_plan, _conn);
   } catch (const std::exception &e) {
     _conn.Rollback();

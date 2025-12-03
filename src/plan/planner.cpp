@@ -12,6 +12,9 @@ std::shared_ptr<Plan> Planner::CreateQueryPlan(const std::string &cmd,
                                                Transaction *tx) {
   Parser parser(cmd);
   std::unique_ptr<QueryData> data = parser.Query();
+  /// This will then send to the basic query planner (until we have implemented
+  /// query optimization, at which point we can switch to using a better
+  /// planner)
   return _query_planner->CreatePlan(data.get(), tx);
 }
 

@@ -9,6 +9,11 @@ EmbeddedResultSet::EmbeddedResultSet(Plan &plan, EmbeddedConnection &conn)
 
 bool EmbeddedResultSet::Next() {
   try {
+    /// _scan is pouplated by opening the plan given to the EmbedeedResultSet
+    /// constructor We invoke the scan.Next() method from the scan at the "top
+    /// of the tree". Pipelined query processing will then invoke the Next of
+    /// any scans under the scan, until we get to a scan at the leaf node of the
+    /// tree
     return _scan->Next();
   } catch (const std::exception &e) {
     _conn.Rollback();
