@@ -3,6 +3,8 @@
 #include "tx/transaction.hpp"
 #include <memory>
 namespace simpledb {
+int TempTable::_next_table_num = 0;
+std::mutex TempTable::_mutex;
 
 TempTable::TempTable(Transaction *tx, const Schema &schema)
     : _tx(tx), _table_name(NextTableName()), _layout(schema) {}
