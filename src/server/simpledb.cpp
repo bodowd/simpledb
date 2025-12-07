@@ -3,6 +3,7 @@
 #include "index/planner/indexupdateplanner.hpp"
 #include "log/logmanager.hpp"
 #include "metadata/metadatamanager.hpp"
+#include "opt/heuristicqueryplanner.hpp"
 #include "plan/basicqueryplanner.hpp"
 #include "plan/basicupdateplanner.hpp"
 #include "plan/planner.hpp"
@@ -40,8 +41,10 @@ SimpleDB::SimpleDB(const std::string &dir_name)
     tx->Recover();
   }
   _metadata_manager = std::make_unique<MetadataManager>(isNew, tx.get());
+  // auto queryPlanner =
+  //     std::make_unique<BasicQueryPlanner>(_metadata_manager.get());
   auto queryPlanner =
-      std::make_unique<BasicQueryPlanner>(_metadata_manager.get());
+      std::make_unique<HeuristicQueryPlanner>(*_metadata_manager);
   // auto updatePlanner =
   //     std::make_unique<BasicUpdatePlanner>(_metadata_manager.get());
   auto updatePlanner =
