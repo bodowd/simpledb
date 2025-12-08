@@ -42,7 +42,7 @@ Predicate Parser::NewPredictate() {
 
 std::unique_ptr<QueryData> Parser::Query() {
   _lex.EatKeyword("select");
-  std::vector<std::string> fields = selectList();
+  auto selectFields = selectList();
   _lex.EatKeyword("from");
   std::set<std::string> tables = tableList();
   Predicate pred;
@@ -50,18 +50,29 @@ std::unique_ptr<QueryData> Parser::Query() {
     _lex.EatKeyword("where");
     pred = NewPredictate();
   }
-  return std::make_unique<QueryData>(fields, tables, pred);
+  return std::make_unique<QueryData>(selectFields.fields, tables, pred,
+                                     selectFields.sum_fields);
 }
 
-std::vector<std::string> Parser::selectList() {
-  std::vector<std::string> L;
-  L.emplace_back(NewField());
+SelectList Parser::selectList() {
+  std::vector<std::string> fields;
+  std::vector<std::string> sumFields;
+  if (_lex.MatchKeyword("sum")) {
+    _lex.EatKeyword("sum");
+    _lex.EatDelim('(');
+    sumFields.emplace_back(NewField());
+    _lex.EatDelim(')');
+  } else {
+    fields.emplace_back(NewField());
+  }
   if (_lex.MatchDelim(',')) {
     _lex.EatDelim(',');
-    std::vector<std::string> LL = selectList();
-    L.insert(L.end(), LL.begin(), LL.end());
+    SelectList LL = selectList();
+    fields.insert(fields.end(), LL.fields.begin(), LL.fields.end());
+    sumFields.insert(sumFields.end(), LL.sum_fields.begin(),
+                     LL.sum_fields.end());
   }
-  return L;
+  return SelectList{fields, sumFields};
 }
 
 std::set<std::string> Parser::tableList() {

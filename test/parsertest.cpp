@@ -10,6 +10,7 @@ TEST(parse, parser_test) {
   std::string s5 = "create table T(A int, B varchar(9))";
   std::string s6 = "create view V as " + s1;
   std::string s7 = "create index I on T(A)";
+  std::string s8 = "select sum(B) from T";
 
   Parser p1(s1);
   p1.Query();
@@ -31,5 +32,8 @@ TEST(parse, parser_test) {
 
   Parser p7(s7);
   p7.UpdateCmd();
+
+  Parser p8(s8);
+  p8.Query();
 }
 } // namespace simpledb

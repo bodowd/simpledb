@@ -3,8 +3,9 @@
 
 namespace simpledb {
 QueryData::QueryData(const std::vector<std::string> fields,
-                     const std::set<std::string> &tables, const Predicate &pred)
-    : _fields(fields), _tables(tables), _pred(pred) {}
+                     const std::set<std::string> &tables, const Predicate &pred,
+                     const std::vector<std::string> &aggFuncs)
+    : _fields(fields), _tables(tables), _sum_fields(aggFuncs), _pred(pred) {}
 
 std::vector<std::string> QueryData::Fields() const { return _fields; }
 

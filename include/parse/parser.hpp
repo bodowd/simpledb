@@ -13,7 +13,15 @@
 #include "record/schema.hpp"
 #include <memory>
 #include <string>
+#include <vector>
 namespace simpledb {
+
+struct SelectList {
+  /// These fields have no aggregation function associated with them
+  std::vector<std::string> fields;
+  /// These fields are to be summed
+  std::vector<std::string> sum_fields;
+};
 
 class Parser {
 public:
@@ -44,7 +52,7 @@ private:
   /// The fields that are in the "SELECT" statement
   /// i.e. SELECT a, b FROM ...
   /// a, b are added to this list
-  std::vector<std::string> selectList();
+  SelectList selectList();
   /// All the tables in the "FROM" portion of the SELECT statement
   std::set<std::string> tableList();
 
