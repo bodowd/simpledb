@@ -1,4 +1,4 @@
-.PHONY: test build clean all
+.PHONY: test build clean all clean-students students
 
 TEST_DIRS = filetest logtest buffertest buffermanagertest transactiontest \
 concurrencytest recordtest testfile tablescantest tabletest tablemanagertest \
@@ -14,16 +14,15 @@ clean-students:
 students:
 	./build/bin/createstudentdb
 
-test:
-	# remove anything left over just in case
-	rm -rf $(TEST_DIRS) 
+test: clean clean-students students
 	./build/bin/simpledb_test
-	# clean up test files
-	rm -rf $(TEST_DIRS) 
+	$(MAKE) clean
+	$(MAKE) clean-students
+
 
 build:
 	mkdir -p build
 	cd build && cmake .. && make
 
-all: build test clean
+all: build test
 
